@@ -1,25 +1,26 @@
 load($SCRIPT_DIR + "/lsystem.js");
-Drone.extend('tree',function(width,length)
+Drone.extend('tree',function(block,size,generations)
 {
 	var s = [];
 	var dr = new Drone();
-    var d0 = Math.min(200, 200);
+    var d0 = size || 200;
+	var b  = block || 1;
     var d = 4;
     var a = 1;
     var ls = new Lsystem({
                 F: function() {
 					for(var i =0;i<d;i++){
-						dr.box(89).up(1);
+						dr.box(b).up(1);
 					}
 				},
                 "+": function() { 
 					for(var i =0;i<d;i++){
-						dr.box(89).left(1);
+						dr.box(b).left(1);
 					}
 				},
                 "-": function() { 
 					for(var i =0;i<d;i++){
-						dr.box(89).right(1);
+						dr.box(b).right(1);
 					}
 					
 				},
@@ -67,7 +68,7 @@ Drone.extend('tree',function(width,length)
               { F: "", "+": "", "-": "" }
               );
    
-	ls.generateN(30);
+	ls.generateN(generations || 30);
 	ls.render();
 	
     return this;
