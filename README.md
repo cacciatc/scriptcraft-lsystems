@@ -5,7 +5,7 @@ Fun with ScriptCraft &amp; L-systems
 
 ### To Install:
 
-1. Create a new folder in CraftBukkit/js-plugins called __lsystems_.
+1. Create a new folder in CraftBukkit/js-plugins called __lsystems__.
 2. Download scriptcraft-lsystems and place all the JS files into the directory you just created.
 3. Start up your Bukkit server or if it is already running use the _reload_ command to reload plugins and correspondingly your updated JS files.
 
