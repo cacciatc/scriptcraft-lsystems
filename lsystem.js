@@ -26,7 +26,7 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-load($SCRIPT_DIR + "/../drone.js");
+load(__folder + "drone.js");
 /**
  * @fileoverview
  *
@@ -354,7 +354,7 @@ Lsystem.prototype = {
       var f = this.vars[m.id];
       if (f && typeof f == "function")
       {
-        f.apply(this, m.args ? m.args : []);
+        f.apply(this, m.args ? m.args : [this.dr]);
       }
   },
 

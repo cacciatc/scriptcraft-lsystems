@@ -1,4 +1,4 @@
-var ScriptCraft = ScriptCraft || {};
+load(__folder + "../core/_primitives.js");
 var global = this;
 //
 // Interface
@@ -6,7 +6,7 @@ var global = this;
 //
 // Please read the following section to understand what a Minecraft Drone can do.
 //
-var Drone = {
+var Drone = Drone || {
     //
     // TLDNR; (Just read this if you're impatient)
     // ======
@@ -16,9 +16,11 @@ var Drone = {
     //
     // ... creates a single wooden block at the cross-hairs or player location
     //
-    // /js box(5).right(2).box('35:15',3,7,2)
+    // /js box(5).right(2).box('35:15',4,9,1)
     //
-    // ... creates a single wooden block and a 2001 black obelisk 3x7x2 in size.
+    // ... creates a single wooden block and a 2001 black obelisk that is 
+	 // 4 wide x 9 tall x 1 long in size.
+	 //
     // If you want to see what else ScriptCraft's Drone can do, read on...
     // 
     // creating a new drone
@@ -246,10 +248,16 @@ var Drone = {
 // There is no need to read any further unless you want to understand how the Drone object works.
 //
 (function(){
+	 // 
+	 // don't want to declare object more than once
+	 //
+	 if (Drone.constructor == Function)
+		  return;
+
     //
     // Drone Constructor
     //
-    var Drone = function(x,y,z,dir)
+    Drone = function(x,y,z,dir)
     {
         var usePlayerCoords = false;
         var playerPos = getPlayerPos();
@@ -262,6 +270,13 @@ var Drone = {
             }else{
                 // base it on the player's current location
                 usePlayerCoords = true;
+					 //
+					 // it's possible that drone.js could be loaded by a non-playing op 
+					 // (from the server console)
+					 //
+					 if (!playerPos){
+						  return null;
+					 }
                 this.x = playerPos.x;
                 this.y = playerPos.y;
                 this.z = playerPos.z;
@@ -272,26 +287,15 @@ var Drone = {
             this.z = z;
         }
         if (typeof dir == "undefined"){
-            this.dir = _getDirFromRotation(playerPos.rotationYaw);
+            this.dir = _getDirFromRotation(playerPos.yaw);
         }else{
             this.dir = dir%4;
         }
         if (usePlayerCoords){
-            this.fwd(2);
+            this.fwd(3);
         }
         this.chkpt('start');
 
-    };
-    Drone.prototype.moveTo = function(x,y){
-        this.x = x;
-        this.y = y;
-        return this;
-    };
-    Drone.prototype.x = function(){
-        return this.x;
-    };
-    Drone.prototype.y = function(){
-        return this.y;
     };
     Drone.prototype.chkpt = function(name){
         this.checkpoints[name] = {x:this.x,y:this.y,z:this.z,dir:this.dir};
@@ -532,6 +536,20 @@ var Drone = {
         print(this);
         return this;
     };
+	Drone.prototype.moveTo = function(x,y){
+	    this.x = x;
+	    this.y = y;
+	    return this;
+	};
+	Drone.prototype.x = function(){
+	    return this.x;
+	};
+	Drone.prototype.y = function(){
+	    return this.y;
+	};
+	Drone.prototype.z = function(){
+	    return this.z;
+	};
 
     // ========================================================================
     // Private variables and functions
@@ -881,7 +899,6 @@ var Drone = {
     };
     Drone.prototype.cylinder0 = _cylinder0;
     Drone.prototype.cylinder = _cylinder1;
-    ScriptCraft.Drone = Drone;
 
     //
     // make all Drone's methods available also as standalone functions
@@ -910,12 +927,3 @@ var Drone = {
     }
                
 }());
-Drone = ScriptCraft.Drone;
-/*
-getPlayerPos = function(){return {x:0,y:0,z:0,rotationYaw:0};};
-getMousePos = function(){return null;};
-putBlock = function(){};
-getBlock = function(){};
-drone.copy('x',4,2,3);
-*/
-drone = new Drone();
